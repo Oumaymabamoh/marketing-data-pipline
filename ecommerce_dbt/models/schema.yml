@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: ad_performance
+      - name: transactions
+
+models:
+  - name: stg_ad_performance
+    columns:
+      - name: campaign_id
+        tests:
+          - not_null
+      - name: channel
+        tests:
+          - not_null
+
+  - name: stg_transactions
+    columns:
+      - name: transaction_id
+        tests:
+          - unique
+          - not_null
