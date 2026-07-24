@@ -8,10 +8,11 @@ st.set_page_config(page_title="E-Commerce Marketing ROI", layout="wide")
 st.title("📊 E-Commerce Marketing Performance & ROAS Dashboard")
 st.markdown("Powered by **DuckDB** and **dbt** | Real-time Executive Insights")
 
-
-@st.cache_data
+# ⚡ Added ttl=10 (cache clears every 10s) so it automatically picks up Airflow updates!
+@st.cache_data(ttl=10)
 def load_data():
-    conn = duckdb.connect("analytics.duckdb")
+    # ⚡ Added read_only=True so Airflow won't crash when running tasks simultaneously
+    conn = duckdb.connect("analytics.duckdb", read_only=True)
     df = conn.execute("SELECT * FROM fct_daily_marketing_performance").df()
     conn.close()
 
